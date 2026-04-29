@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Adnan Ansari · Data & BI Portfolio</title>
+  <!-- fonts + icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- RESET & VARIABLES (same robust foundation) ----- */
+    *{margin:0; padding:0; box-sizing:border-box;}
+    :root{
+      --navy:#0b1e33; --navy-light:#1a334d; --teal:#1ab2b0; --purple:#7a6ef0;
+      --white:#ffffff; --off-white:#f8fafc; --gray-border:#e9edf4; --text-dark:#0b1e33;
+      --text-medium:#2e405b; --shadow-sm:0 5px 20px -5px rgba(11,30,51,0.08);
+      --shadow-md:0 15px 30px -12px rgba(11,30,51,0.15);
+    }
+    body{
+      font-family:'Inter', sans-serif; background:var(--off-white); color:var(--text-dark);
+      line-height:1.5; scroll-behavior:smooth;
+    }
+    .app-wrapper{display:flex; min-height:100vh;}
+    .left-nav{
+      width:260px; background:linear-gradient(160deg,#fff 0%,#f2f7ff 100%); border-right:1px solid var(--gray-border);
+      box-shadow:4px 0 20px rgba(0,0,0,0.02); padding:2.5rem 1.2rem 2rem 1.8rem; position:sticky; top:0; height:100vh;
+      overflow-y:auto; display:flex; flex-direction:column; z-index:10; transition:box-shadow 0.3s;
+    }
+    .left-nav:hover{box-shadow:6px 0 24px rgba(26,178,176,0.08);}
+    .nav-logo{
+      font-weight:700; font-size:1.8rem; letter-spacing:-0.02em; background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 80%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:2.8rem; line-height:1.2;
+      animation:glowPulse 3s infinite ease-in-out;
+    }
+    @keyframes glowPulse{0%{opacity:1;} 50%{opacity:0.85; text-shadow:0 0 6px rgba(26,178,176,0.6);} 100%{opacity:1;}}
+    .nav-menu{display:flex; flex-direction:column; gap:1.2rem; flex:1;}
+    .nav-item{
+      display:flex; align-items:center; gap:1rem; padding:0.7rem 1rem; border-radius:16px; color:var(--text-medium);
+      text-decoration:none; font-weight:500; transition:all 0.25s; border:1px solid transparent;
+    }
+    .nav-item i{width:1.6rem; font-size:1.2rem; color:var(--teal); transition:0.25s;}
+    .nav-item:hover{background:rgba(26,178,176,0.06); border-color:rgba(26,178,176,0.3); color:var(--navy); transform:translateX(5px);}
+    .nav-item:hover i{color:var(--purple); transform:scale(1.1) rotate(2deg);}
+    .nav-footer{margin-top:auto; border-top:1px dashed var(--gray-border); padding-top:1.5rem; font-size:0.8rem; color:#8399b8;}
+    .footer-tag{display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; transition:0.2s;}
+    .footer-tag i{width:1.4rem; color:var(--teal);}
+    .footer-tag:hover i{color:var(--purple); transform:scale(1.1);}
+    .main-content{flex:1; min-width:0; background:var(--off-white);}
+    .container{width:100%; max-width:1280px; margin:0 auto; padding:0 1.5rem;}
+    .text-teal{color:var(--teal);} .text-purple{color:var(--purple);}
+    .btn{
+      display:inline-block; padding:0.7rem 1.6rem; border-radius:40px; font-weight:600; text-decoration:none;
+      transition:0.25s; font-size:0.95rem; border:1px solid transparent;
+    }
+    .btn-primary{background:var(--navy); color:white; box-shadow:0 4px 12px rgba(11,30,51,0.15);}
+    .btn-primary:hover{background:var(--navy-light); transform:translateY(-4px) scale(1.02); box-shadow:0 12px 24px -8px #0b1e33;}
+    .btn-outline{background:transparent; border:1px solid var(--navy); color:var(--navy);}
+    .btn-outline:hover{background:var(--navy); color:white; transform:translateY(-2px);}
+    .hero{display:flex; align-items:center; flex-wrap:wrap; gap:2rem; padding:3rem 0 2rem;}
+    .hero-content{flex:1 1 350px;}
+    .hero h1{font-size:clamp(2rem,6vw,3.5rem); font-weight:700; line-height:1.2; letter-spacing:-0.02em; color:var(--navy); min-height:6rem;}
+    #typing-title{display:inline-block; background:linear-gradient(135deg,var(--teal),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; border-bottom:3px solid var(--purple);}
+    .hero-sub{font-size:clamp(1rem,3vw,1.3rem); font-weight:500; margin:1rem 0 0.5rem; color:var(--text-medium);}
+    .hero-bio{font-size:1rem; color:var(--text-medium); max-width:600px; margin:1.2rem 0 2rem;}
+    .cta-group{display:flex; gap:1rem; flex-wrap:wrap;}
+    .hero-viz{
+      flex:1 1 300px; background:linear-gradient(145deg,#fff,#f4f9ff); border-radius:32px; padding:1.8rem 1.4rem;
+      box-shadow:var(--shadow-md); border:1px solid #d6e3f0; animation:floatViz 5s infinite alternate;
+    }
+    @keyframes floatViz{0%{transform:translateY(0);} 100%{transform:translateY(-8px); box-shadow:0 30px 40px -14px rgba(26,178,176,0.35);}}
+    .kpi-row{display:flex; justify-content:space-between; margin:1.2rem 0; background:rgba(11,30,51,0.02); padding:0.6rem; border-radius:20px;}
+    .kpi-item{text-align:center;}
+    .kpi-label{font-size:0.7rem; text-transform:uppercase; color:#4f658b;}
+    .kpi-value{font-weight:800; font-size:1.1rem; color:var(--navy);}
+    .chart-bars{display:flex; gap:0.5rem; height:100px; align-items:flex-end; justify-content:space-around; margin:1rem 0;}
+    .section-title{font-size:clamp(1.8rem,5vw,2.4rem); font-weight:700; margin:2.5rem 0 1.5rem; color:var(--navy); position:relative; display:inline-block;}
+    .section-title:after{content:''; display:block; width:70px; height:4px; background:linear-gradient(90deg,var(--teal),var(--purple)); margin-top:0.3rem; transition:width 0.3s;}
+    .section-title:hover:after{width:110px;}
+    .about-grid{
+      display:flex; gap:2.5rem; flex-wrap:wrap; background:var(--white); padding:2.5rem;
+      border-radius:32px; box-shadow:var(--shadow-sm); border:1px solid #eef2f7;
+    }
+    .about-photo{flex:0 0 200px; text-align:center;}
+    .profile-img{
+      width:100%; max-width:180px; height:200px; border-radius:32px;
+      object-fit:cover; border:3px solid var(--teal); box-shadow:0 8px 20px rgba(26,178,176,0.2);
+      display:block; margin:0 auto 1rem; background:#eef2fa;
+    }
+    .profile-name{font-weight:700; color:var(--navy); font-size:1.1rem;}
+    .about-text{flex:1; min-width:280px;}
+    .about-text p{font-size:1.05rem; color:var(--text-medium); margin-bottom:1.5rem; line-height:1.7;}
+    .contact-line{display:flex; flex-wrap:wrap; gap:2rem; margin:1rem 0;}
+    .contact-line i{width:1.8rem; color:var(--teal); font-size:1.2rem;}
+    .contact-line a{color:var(--text-medium); text-decoration:none; transition:0.2s;}
+    .contact-line a:hover{color:var(--teal); text-decoration:underline;}
+    .skills-wrapper{display:flex; flex-direction:column; gap:2.5rem;}
+    .skill-category h3{font-size:1.5rem; margin-bottom:1.5rem; color:var(--navy); border-left:6px solid var(--purple); padding-left:1.2rem;}
+    .skills-grid{
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(170px,1fr)); gap:1.2rem;
+    }
+    .skill-card{
+      background:white; border-radius:24px; padding:1.2rem 1rem; text-align:center;
+      box-shadow:var(--shadow-sm); border:1px solid #edf2f9; transition:0.2s;
+    }
+    .skill-card:hover{transform:translateY(-6px); background:#f6fdff; border-color:var(--teal);}
+    .skill-card i{font-size:2rem; margin-bottom:0.5rem; color:var(--navy);}
+    .skill-card span{font-weight:500; font-size:0.95rem;}
+    .projects-grid{
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(340px,1fr)); gap:2rem;
+      margin:2rem 0;
+    }
+    .project-card{
+      background:white; border-radius:32px; padding:2rem; box-shadow:var(--shadow-md);
+      border:1px solid #eef4fa; transition:0.25s; display:flex; flex-direction:column;
+    }
+    .project-card:hover{transform:translateY(-8px); border-color:var(--teal);}
+    .project-title{font-size:1.5rem; font-weight:700; margin-bottom:0.3rem; color:var(--navy);}
+    .project-tech{font-size:0.9rem; font-weight:600; color:var(--teal); margin-bottom:1rem; letter-spacing:-0.2px;}
+    .project-description{font-size:0.95rem; color:var(--text-medium); line-height:1.6; flex:1; margin-bottom:1.2rem;}
+    .project-impact{
+      background:#e2f0ef; color:#0b5e5c; font-weight:700; padding:0.4rem 1rem; border-radius:40px;
+      display:inline-block; margin-bottom:1.2rem; width:fit-content; font-size:0.85rem;
+    }
+    .project-link{
+      display:inline-flex; align-items:center; gap:0.6rem; background:transparent;
+      border:1.5px solid var(--purple); color:var(--purple); font-weight:600; padding:0.6rem 1.3rem;
+      border-radius:50px; text-decoration:none; width:fit-content; transition:0.2s; font-size:0.85rem;
+    }
+    .project-link:hover{background:var(--purple); color:white;}
+    .edu-grid{
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem;
+      background:white; border-radius:32px; padding:2.5rem; margin:2rem 0; box-shadow:var(--shadow-sm);
+    }
+    .edu-item{padding:0.5rem; border-left:3px solid var(--teal); padding-left:1.2rem;}
+    .edu-title{font-weight:700; font-size:1.2rem;}
+    .edu-meta{color:var(--purple); font-weight:500; margin:0.3rem 0; font-size:0.9rem;}
+    .three-boxes{
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:2rem;
+      margin:2.5rem 0;
+    }
+    .info-box{
+      background:var(--white); border-radius:32px; padding:2rem 1.8rem; box-shadow:var(--shadow-sm);
+      border:1px solid #eef3fa; transition:0.2s; display:flex; flex-direction:column;
+    }
+    .info-box:hover{transform:translateY(-6px); box-shadow:var(--shadow-md); border-color:rgba(26,178,176,0.3);}
+    .box-header{
+      display:flex; align-items:center; gap:0.8rem; margin-bottom:1.8rem;
+      border-bottom:2px dashed rgba(26,178,176,0.2); padding-bottom:0.8rem;
+    }
+    .box-header i{font-size:2.2rem; background:linear-gradient(135deg,var(--teal),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .box-header h3{font-size:1.5rem; font-weight:700; color:var(--navy);}
+    .box-list{list-style:none; flex:1;}
+    .box-list li{
+      display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.2rem;
+      font-size:0.95rem; color:var(--text-medium); line-height:1.5;
+    }
+    .box-list li i{color:var(--purple); min-width:1.6rem; margin-top:0.2rem;}
+    .box-list li strong{color:var(--teal); font-weight:600; margin-right:0.3rem;}
+    .badge-light{
+      background:rgba(122,110,240,0.08); color:var(--purple); font-weight:600; font-size:0.7rem;
+      padding:0.2rem 0.8rem; border-radius:40px; display:inline-block; margin-left:0.5rem;
+      border:1px solid rgba(122,110,240,0.3);
+    }
+    .contact-section{
+      background:var(--navy); border-radius:48px 48px 0 0; padding:3rem 2rem; color:white; margin-top:3rem;
+    }
+    .contact-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:2.5rem;}
+    .contact-info i{width:2rem; color:var(--teal); font-size:1.2rem;}
+    .contact-info p{margin:1rem 0;}
+    .contact-info a{color:white; text-decoration:none; transition:0.2s;}
+    .contact-info a:hover{color:var(--teal); text-decoration:underline;}
+    .resume-btn{
+      padding:12px 22px; border-radius:12px; background:linear-gradient(135deg,#14b8a6,#0ea5e9);
+      color:#fff; text-decoration:none; font-weight:500; display:inline-flex; align-items:center; gap:10px;
+      transition:0.2s; border:1px solid rgba(255,255,255,0.2);
+    }
+    .resume-btn:hover{transform:translateY(-4px); box-shadow:0 8px 20px rgba(20,184,166,0.4);}
+    .view-btn{background:linear-gradient(135deg,#8b5cf6,#6366f1);}
+    .chatbot-toggle{
+      position:fixed; bottom:30px; right:30px; width:60px; height:60px; border-radius:50%;
+      background:linear-gradient(135deg,#25D366,#128C7E); color:white; display:flex; align-items:center;
+      justify-content:center; font-size:28px; cursor:pointer; z-index:100; border:2px solid white;
+      transition:0.2s;
+    }
+    .chatbot-toggle:hover{transform:scale(1.15) rotate(5deg);}
+    .chatbot-panel{
+      position:fixed; bottom:100px; right:30px; width:340px; background:white; border-radius:24px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.25); z-index:99; display:none; flex-direction:column;
+    }
+    .chatbot-header{background:var(--navy); color:white; padding:1rem; display:flex; align-items:center;}
+    .chatbot-messages{background:#f0f5fb; padding:1rem; max-height:260px; overflow-y:auto;}
+    .bot-message{background:white; padding:0.7rem; border-radius:18px; margin-bottom:0.5rem; max-width:80%;}
+    .user-message{background:#dcf8c6; align-self:flex-end; padding:0.7rem; border-radius:18px; max-width:80%;}
+    .chatbot-input-area{display:flex; border-top:1px solid #dde3eb;}
+    .chatbot-input-area input{flex:1; padding:1rem; border:none; outline:none;}
+    .chatbot-input-area button{background:#25D366; color:white; border:none; padding:0 1.2rem;}
+    @media (max-width:720px){
+      .app-wrapper{flex-direction:column;}
+      .left-nav{width:100%; height:auto; position:static; padding:1.5rem;}
+      .nav-menu{flex-direction:row; flex-wrap:wrap;}
+    }
+    footer{background:var(--navy); color:#a0bedb; text-align:center; padding:2rem; border-top:1px solid #1e3857;}
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <!-- LEFT NAVIGATION (Adnan Ansari) -->
+  <nav class="left-nav">
+    <div class="nav-logo">Adnan<span>_</span>Ansari</div>
+    <div class="nav-menu">
+      <a href="#about" class="nav-item"><i class="fas fa-user"></i> About</a>
+      <a href="#skills" class="nav-item"><i class="fas fa-code"></i> Skills</a>
+      <a href="#projects" class="nav-item"><i class="fas fa-layer-group"></i> Projects</a>
+      <a href="#education" class="nav-item"><i class="fas fa-graduation-cap"></i> Education</a>
+      <a href="#contact" class="nav-item"><i class="fas fa-paper-plane"></i> Contact</a>
+    </div>
+    <div class="nav-footer">
+      <div class="footer-tag"><i class="fas fa-map-pin"></i> Kathmandu, Nepal</div>
+      <div class="footer-tag"><i class="fas fa-envelope"></i> info.adnanansari01@gmail.com</div>
+      <div class="footer-tag"><i class="fas fa-phone-alt"></i> +977 9809164623</div>
+      <div class="footer-tag"><i class="fab fa-github"></i> <i class="fab fa-linkedin"></i> <i class="fab fa-twitter"></i></div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- HERO SECTION with data viz widget -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Data & Business Intelligence <br><span id="typing-title"></span></h1>
+          <div class="hero-sub"> Data Analytics Engineer | AI/ML enthusiast | BI Specialist </div>
+          <p class="hero-bio">Motivated data professional with structured approach to ETL, dashboard development, KPI tracking, and data-driven insights. Skilled in SQL, Python, Tableau, and modern analytics tools. Currently pursuing BCS (AI specialization) – turning complex data into strategic decisions.</p>
+          <div class="cta-group">
+            <a href="#projects" class="btn btn-primary">Explore projects</a>
+            <a href="https://api.whatsapp.com/send/?phone=9779809164623&text&type=phone_number" target="_blank" class="btn btn-outline"><i class="fab fa-whatsapp"></i> Connect</a>
+          </div>
+          <div style="margin-top:1.5rem; display:flex; gap:1.5rem; flex-wrap:wrap;">
+            <span><i class="fas fa-envelope text-teal"></i> info.adnanansari01@gmail.com</span>
+            <span><i class="fas fa-phone text-purple"></i> +977 9809164623</span>
+          </div>
+        </div>
+        <div class="hero-viz">
+          <div class="dashboard-header" style="display:flex; justify-content:space-between; margin-bottom:0.5rem;"><span><i class="fas fa-chart-line"></i> Retail KPI snapshot</span><i class="fas fa-ellipsis-h"></i></div>
+          <div class="kpi-row">
+            <div class="kpi-item"><div class="kpi-label">Revenue</div><div class="kpi-value">$284K <small>+8%</small></div></div>
+            <div class="kpi-item"><div class="kpi-label">Sell-through</div><div class="kpi-value">74% <small>↑6%</small></div></div>
+            <div class="kpi-item"><div class="kpi-label">Stock turn</div><div class="kpi-value">3.2x <small>optimized</small></div></div>
+          </div>
+          <div class="chart-bars">
+            <div style="flex:1; text-align:center;"><div style="height:65px; width:100%; background:var(--teal); border-radius:12px;"></div><span>Sales</span></div>
+            <div style="flex:1; text-align:center;"><div style="height:50px; width:100%; background:var(--purple); border-radius:12px;"></div><span>Inventory</span></div>
+            <div style="flex:1; text-align:center;"><div style="height:82px; width:100%; background:var(--teal); border-radius:12px;"></div><span>Profit</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT (Adnan Ansari profile) with corrected LinkedIn & GitHub links -->
+      <section id="about">
+        <h2 class="section-title">About me</h2>
+        <div class="about-grid">
+          <div class="about-photo">
+            <img src="/public/resume/Adnan-pp.png" alt="Adnan Ansari" class="profile-img">
+            <div class="profile-name">Adnan Ansari</div>
+          </div>
+          <div class="about-text">
+            <p>I am a motivated and enthusiastic individual with a strong ability to approach assignments and projects in a structured and reliable manner. I work effectively in team environments, collaborating to achieve goals within deadlines while maintaining high quality standards. Passionate about technology, especially data analytics and business intelligence — always eager to explore new tools and frameworks. My experience includes data cleaning, exploratory data analysis, interactive dashboard development, KPI tracking, and end-to-end ETL workflows.</p>
+            <p>Currently pursuing a Bachelor of Computer Science with specialization in Artificial Intelligence at IIMS (affiliated with Taylor's University, Malaysia), strengthening my expertise in AI/ML and data-driven solutions for real-world problems.</p>
+            <div class="contact-line">
+              <span><i class="fab fa-linkedin text-teal"></i> <a href="https://www.linkedin.com/in/adnan-ansari-11ba56295/?skipRedirect=true" target="_blank" rel="noopener noreferrer">linkedin.com/in/adnan-ansari</a></span>
+              <span><i class="fab fa-github text-purple"></i> <a href="https://github.com/AdnanAnsari04" target="_blank" rel="noopener noreferrer">github.com/AdnanAnsari04</a></span>
+            </div>
+            <div class="contact-line">
+              <span><i class="fas fa-graduation-cap text-teal"></i> BCS AI (2023-2026) · IIMS, Kathmandu</span>
+              <span><i class="fas fa-chart-line text-purple"></i> Tableau & Python Certified</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS (exactly from CV) -->
+      <section id="skills"><h2 class="section-title">Technical toolkit</h2>
+        <div class="skills-wrapper">
+          <div class="skill-category"><h3>Data & Business Intelligence</h3><div class="skills-grid">
+            <div class="skill-card"><i class="fas fa-database"></i><span>SQL</span></div>
+            <div class="skill-card"><i class="fab fa-python"></i><span>Python (Pandas, NumPy)</span></div>
+            <div class="skill-card"><i class="fas fa-chart-pie"></i><span>Tableau</span></div>
+            <div class="skill-card"><i class="fas fa-file-excel"></i><span>Excel</span></div>
+            <div class="skill-card"><i class="fas fa-broom"></i><span>Data Cleaning</span></div>
+            <div class="skill-card"><i class="fas fa-magnifying-glass-chart"></i><span>EDA</span></div>
+            <div class="skill-card"><i class="fas fa-rotate"></i><span>ETL Processes</span></div>
+            <div class="skill-card"><i class="fas fa-code-branch"></i><span>Data Transformation</span></div>
+            <div class="skill-card"><i class="fas fa-table"></i><span>Data Modeling</span></div>
+            <div class="skill-card"><i class="fas fa-chart-line"></i><span>Predictive Analysis</span></div>
+            <div class="skill-card"><i class="fas fa-calculator"></i><span>Statistical Analysis</span></div>
+            <div class="skill-card"><i class="fas fa-chart-simple"></i><span>KPI Development</span></div>
+          </div></div>
+          <div class="skill-category"><h3>Growth & Marketing Analytics</h3><div class="skills-grid">
+            <div class="skill-card"><i class="fab fa-google"></i><span>Google Analytics</span></div>
+            <div class="skill-card"><i class="fas fa-chart-simple"></i><span>Campaign Perf.</span></div>
+            <div class="skill-card"><i class="fas fa-arrows-spin"></i><span>Conversion Tracking</span></div>
+            <div class="skill-card"><i class="fas fa-chart-gantt"></i><span>SEO Data Analysis</span></div>
+            <div class="skill-card"><i class="fas fa-chart-pie"></i><span>Reporting & Viz</span></div>
+          </div></div>
+          <div class="skill-category"><h3>Web & Product Development</h3><div class="skills-grid">
+            <div class="skill-card"><i class="fab fa-swift"></i><span>Swift</span></div>
+            <div class="skill-card"><i class="fab fa-react"></i><span>React.js</span></div>
+            <div class="skill-card"><i class="fab fa-js"></i><span>JavaScript</span></div>
+            <div class="skill-card"><i class="fab fa-html5"></i><span>HTML5</span></div>
+            <div class="skill-card"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+            <div class="skill-card"><i class="fab fa-wordpress"></i><span>WordPress</span></div>
+            <div class="skill-card"><i class="fas fa-mobile-alt"></i><span>Responsive UI</span></div>
+          </div></div>
+          <div class="skill-category"><h3>AI & Automation</h3><div class="skills-grid">
+            <div class="skill-card"><i class="fas fa-robot"></i><span>AI Workflow Automation</span></div>
+            <div class="skill-card"><i class="fas fa-tag"></i><span>AI-assisted Tagging</span></div>
+            <div class="skill-card"><i class="fas fa-message"></i><span>Prompt Engineering</span></div>
+          </div></div>
+          <div class="skill-category"><h3>Platforms & Tools</h3><div class="skills-grid">
+            <div class="skill-card"><i class="fas fa-cloud"></i><span>Jupyter/Colab</span></div>
+            <div class="skill-card"><i class="fab fa-git-alt"></i><span>Git</span></div>
+            <div class="skill-card"><i class="fas fa-code"></i><span>VS Code</span></div>
+            <div class="skill-card"><i class="fas fa-file-excel"></i><span>MS Excel</span></div>
+            <div class="skill-card"><i class="fas fa-file-powerpoint"></i><span>PowerPoint</span></div>
+            <div class="skill-card"><i class="fas fa-file-word"></i><span>Word</span></div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- PROJECTS (5 detailed projects from Adnan's CV) -->
+      <section id="projects"><h2 class="section-title">Featured projects</h2>
+        <div class="projects-grid">
+          <div class="project-card"><div class="project-title">3D Reconstruction iOS App</div><div class="project-tech">Swift, ARKit, LiDAR</div><p class="project-description">iOS application leveraging LiDAR sensor for real‑time 3D reconstruction. Built depth data pipeline with ARKit, optimized point cloud generation, and enabled export of 3D models.</p><div class="project-impact">Real-time rendering · point cloud accuracy</div><a href="#" class="project-link"><i class="fab fa-github"></i> Case study</a></div>
+          <div class="project-card"><div class="project-title">Agrifood CO₂ Emissions</div><div class="project-tech">Python, Pandas, Streamlit</div><p class="project-description">Global agrifood CO2 analysis (1990-2020). Built interactive Streamlit dashboard with trend lines, regional comparisons, and automated data cleaning pipeline to handle missing values.</p><div class="project-impact">30+ years insights · climate linkages</div><a href="#" class="project-link"><i class="fab fa-github"></i> Dashboard demo</a></div>
+          <div class="project-card"><div class="project-title">Retail Performance Dashboard</div><div class="project-tech">Tableau, SQL, Excel</div><p class="project-description">Interactive Tableau dashboard tracking 8+ KPIs (revenue, sell-through, stock turnover). Identified slow-moving inventory leading to 12% potential overstock cost reduction and drill-down views for store managers.</p><div class="project-impact">12% cost reduction · 8+ KPIs</div><a href="#" class="project-link"><i class="fab fa-github"></i> View dashboard</a></div>
+          <div class="project-card"><div class="project-title">BrightEduNepal eLearning</div><div class="project-tech">PHP, JS, HTML5/CSS3</div><p class="project-description">Full-featured eLearning platform with course listings, enrollment flows, and instructor dashboards. Implemented lazy loading and component optimization reducing page load time by 25%.</p><div class="project-impact">25% faster load · conversion tracking</div><a href="#" class="project-link"><i class="fab fa-github"></i> Platform repo</a></div>
+          <div class="project-card"><div class="project-title">IoT Air Quality Monitor</div><div class="project-tech">Python, MQTT, ThingsBoard</div><p class="project-description">IoT-based air quality system using hardware sensors + MQTT protocol. Cloud pipeline with real-time telemetry, automated alerts for PM2.5/CO2 thresholds, ThingsBoard dashboard.</p><div class="project-impact">Real-time alerts · sensor telemetry</div><a href="#" class="project-link"><i class="fab fa-github"></i> IoT repository</a></div>
+        </div>
+      </section>
+
+      <!-- EDUCATION (exact from CV) -->
+      <section id="education"><h2 class="section-title">Education</h2>
+        <div class="edu-grid">
+          <div class="edu-item"><div class="edu-title">Bachelor of Computer Science (AI Specialization)</div><div class="edu-meta">IIMS, Kathmandu (Affiliated with Taylor's University, Malaysia)</div><div>Jan 2023 – Jan 2027 · Ongoing</div></div>
+          <div class="edu-item"><div class="edu-title">Higher Secondary Education (+2)</div><div class="edu-meta">GoldenGate International Secondary School, Kathmandu</div><div>2019 – 2021</div></div>
+          
+        </div>
+      </section>
+
+      <!-- CERTIFICATIONS, LANGUAGES & PROJECT IMPACT BOXES (3 boxes) -->
+      <section>
+        <h2 class="section-title">Credentials & achievements</h2>
+        <div class="three-boxes">
+          <div class="info-box"><div class="box-header"><i class="fas fa-certificate"></i><h3>Certifications</h3></div><ul class="box-list"><li><i class="fas fa-check-circle"></i> <strong>Network Support and Security</strong> – Cisco Networking Academy (2023)</li><li><i class="fas fa-check-circle"></i> <strong>Future Forward: Communication Skills</strong> – IIMS College (2023)</li><li><i class="fas fa-check-circle"></i> <strong>Enterprise Design Thinking Practitioner</strong> – IBM (2024)</li><li><i class="fas fa-check-circle"></i> <strong>MERN Stack Professional Training</strong> – Broadway Infosys (2025)</li></ul></div>
+          <div class="info-box"><div class="box-header"><i class="fas fa-language"></i><h3>Languages</h3></div><ul class="box-list"><li><i class="fas fa-flag"></i> <strong>English</strong> – Proficient <span class="badge-light">C1</span></li><li><i class="fas fa-flag"></i> <strong>Nepali</strong> – Proficient <span class="badge-light">Native</span></li><li><i class="fas fa-flag"></i> <strong>Hindi</strong> – Competent <span class="badge-light">Daily use</span></li></ul></div>
+          <div class="info-box"><div class="box-header"><i class="fas fa-chart-line"></i><h3>Project impact</h3></div><ul class="box-list"><li><i class="fas fa-dollar-sign"></i> <strong>12% potential overstock reduction</strong> – Retail inventory optimization</li><li><i class="fas fa-tachometer-alt"></i> <strong>25% faster load time</strong> – BrightEduNepal optimization</li><li><i class="fas fa-cube"></i> <strong>Real‑time 3D reconstruction</strong> – LiDAR iOS application</li><li><i class="fas fa-chart-line"></i> <strong>Interactive CO₂ dashboard</strong> – Streamlit global analysis</li><li><i class="fas fa-cloud-upload-alt"></i> <strong>IoT telemetry & alerts</strong> – MQTT / ThingsBoard</li></ul></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- CONTACT SECTION (with CV download & updated LinkedIn/GitHub) -->
+    <section id="contact" class="contact-section"><div class="container" style="padding:0;">
+      <h2 style="color:white; font-size:2.2rem; margin-bottom:2rem;">Let’s collaborate</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:info.adnanansari01@gmail.com">info.adnanansari01@gmail.com</a></p>
+          <p><i class="fas fa-phone"></i> <strong>Phone/WhatsApp:</strong> <a href="https://api.whatsapp.com/send/?phone=9779809164623" target="_blank">+977 9809164623</a></p>
+          <p><i class="fab fa-linkedin"></i> <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/adnan-ansari-11ba56295/?skipRedirect=true" target="_blank" rel="noopener noreferrer">linkedin.com/in/adnan-ansari</a></p>
+          <p><i class="fab fa-github"></i> <strong>GitHub:</strong> <a href="https://github.com/AdnanAnsari04" target="_blank" rel="noopener noreferrer">github.com/AdnanAnsari04</a></p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <a href="/public/resume/Adnan_Ansari_CV.pdf" class="resume-btn" download><i class="fas fa-download"></i> Download CV</a>
+            <a href="/public/resume/" class="resume-btn view-btn" target="_blank"><i class="fas fa-eye"></i> View CV</a>
+          </div>
+          <div style="color:#b0d0f0;"><i class="fas fa-graduation-cap text-teal"></i> BCS (AI) · IIMS | IBM Design Thinking Practitioner</div>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem; border-top:1px solid #1e3857; padding-top:1.5rem; color:#b0d0f0;">© 2025 Adnan Ansari — Data & Business Intelligence Portfolio</div>
+    </div></section>
+    <footer><p>SQL · Python · Tableau · ETL · KPI development — analytics that drive decisions</p></footer>
+  </main>
+</div>
+
+<!-- WhatsApp chatbot helper -->
+<div class="chatbot-toggle" id="chatToggle"><i class="fab fa-whatsapp"></i></div>
+<div class="chatbot-panel" id="chatPanel">
+  <div class="chatbot-header"><i class="fab fa-whatsapp"></i><h4>WhatsApp</h4><span class="close-btn" id="closeChat" style="margin-left:auto; cursor:pointer;">✖</span></div>
+  <div class="chatbot-messages" id="chatMessages"><div class="bot-message">👋 Let's talk about data & BI opportunities. Message me!</div></div>
+  <div class="chatbot-input-area"><input type="text" id="chatInput" placeholder="Type message..." /><button id="sendChatBtn"><i class="fab fa-whatsapp"></i></button></div>
+</div>
+
+<script>
+  // typing effect for hero (data & business intelligence)
+  const titles = ["Turning Data Into Strategic Decisions","Driving Growth Through Analytics","ETL · Dashboards · KPIs","AI & Data-Driven Solutions","From Raw Data to Business Impact"];
+  let idx=0, chIdx=0, del=false; const spd=70, pause=2000;
+  function typeEffect(){
+    const cur=titles[idx], el=document.getElementById("typing-title");
+    if(!el) return;
+    if(del){ el.textContent=cur.substring(0,chIdx-1); chIdx--; }
+    else { el.textContent=cur.substring(0,chIdx+1); chIdx++; }
+    if(!del && chIdx===cur.length){ del=true; setTimeout(typeEffect,pause); return; }
+    if(del && chIdx===0){ del=false; idx=(idx+1)%titles.length; setTimeout(typeEffect,200); return; }
+    setTimeout(typeEffect, del?spd/2:spd);
+  }
+  // chatbot logic with actual number
+  const toggle=document.getElementById('chatToggle'), panel=document.getElementById('chatPanel'), close=document.getElementById('closeChat');
+  const sendBtn=document.getElementById('sendChatBtn'), input=document.getElementById('chatInput'), msgBox=document.getElementById('chatMessages');
+  const phone='9779809164623';
+  toggle.addEventListener('click',()=>{ panel.style.display=panel.style.display==='flex'?'none':'flex'; });
+  close.addEventListener('click',()=>{ panel.style.display='none'; });
+  function sendWA(){
+    if(!input.value.trim()) return;
+    const user=document.createElement('div'); user.className='user-message'; user.textContent=input.value;
+    msgBox.appendChild(user); msgBox.scrollTop=msgBox.scrollHeight;
+    window.open(`https://api.whatsapp.com/send/?phone=${phone}&text=${encodeURIComponent(input.value)}&type=phone_number&app_absent=0`,'_blank');
+    setTimeout(()=>{ const bot=document.createElement('div'); bot.className='bot-message'; bot.textContent='👍 Message sent! Continue on WhatsApp.'; msgBox.appendChild(bot); },800);
+    input.value='';
+  }
+  sendBtn.addEventListener('click',sendWA);
+  input.addEventListener('keypress',(e)=>{ if(e.key==='Enter') sendWA(); });
+  document.addEventListener('DOMContentLoaded',()=>{ setTimeout(typeEffect,500); });
+</script>
+</body>
+</html>
